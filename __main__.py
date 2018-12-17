@@ -45,5 +45,25 @@ def main():
         print(f"Exit status: {status}")
 
 
+def main2():
+    with open('out.log', 'wb') as log:
+        child = pexpect.spawn('./the-script', logfile=log)
+        child.expect('First Name: ')
+        child.sendline('Tim')
+        child.expect('Last Name: ')
+        child.sendline('Brownawell')
+        num = 0
+        try:
+            while True:
+                child.expect(['guess.*: ', 'try again.*: '])
+                child.sendline(f"{num}")
+                num += 1
+        except pexpect.exceptions.EOF:
+            pass
+        child.close()
+        print("See `out.log` for output.")
+        print(f"Exit status: {child.exitstatus}")
+
+
 if __name__ == '__main__':
-    main()
+    main2()
