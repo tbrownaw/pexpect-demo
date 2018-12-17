@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+echo "Hello"
+
+read -p "First Name: " FNAME
+read -p "Last Name: " LNAME
+
+NUM=$((RANDOM % 10))
+read -p "$FNAME $LNAME, please guess the number: " GUESS
+while [[ "$NUM" -ne "$GUESS" ]]
+do
+    read -p "Sorry, please try again: " GUESS
+done
+
+echo "Congratualtions!"
+
+echo "Goodbye"
