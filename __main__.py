@@ -1,5 +1,7 @@
 import pexpect
 
+# Fun fact: `pexpect.run` can't take a generator.
+# String, method, or function only.
 def guess(arg):
     num = 0
     while num < 10:
@@ -14,13 +16,9 @@ def guess2(arg):
     num2 += 1
     return f"{num2}\n"
 
+# "But what if I *like* generators?"
 def guess3_wrap():
-    def gen():
-        num = 0
-        while num < 10:
-            yield f"{num}\n"
-            num += 1
-    inner = gen()
+    inner = guess(None)
     def wrapped(arg):
         return inner.send(None)
     return wrapped
@@ -41,7 +39,7 @@ def main():
             events={'First Name: ': 'Tim\n',
                     'Last Name: ': 'Brownawell\n',
                     # guess guess2 guess3_wrap() guess4().get
-                    r'(guess|try again).*: ': guess2}
+                    r'(guess|try again).*: ': guess3_wrap()}
             )
         print(f"Output: <<<{output}>>>")
         print(f"Exit status: {status}")
